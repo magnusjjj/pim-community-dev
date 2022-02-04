@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Enrichment\Product\Infrastructure\AntiCorruptionLayer;
 use Akeneo\Pim\Enrichment\Product\Domain\Model\ProductIdentifier;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\IsUserCategoryGranted;
 use Akeneo\Pim\Permission\Component\Query\ProductCategoryAccessQueryInterface;
+use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -16,8 +17,10 @@ use Webmozart\Assert\Assert;
 final class AclIsUserCategoryGranted implements IsUserCategoryGranted
 {
     /* @phpstan-ignore-next-line */
-    public function __construct(private ?ProductCategoryAccessQueryInterface $productCategoryAccessQuery)
-    {
+    public function __construct(
+        private ?ProductCategoryAccessQueryInterface $productCategoryAccessQuery,
+        private UserRepositoryInterface $userRepository
+    ) {
     }
 
     public function forProductAndAccessLevel(
@@ -27,10 +30,13 @@ final class AclIsUserCategoryGranted implements IsUserCategoryGranted
     ): bool {
         Assert::notNull($this->productCategoryAccessQuery);
 
+        $user = $this->userRepository->findOneBy(['id' => $userId]);
+        Assert::notNull($user);
+
         /* @phpstan-ignore-next-line */
         $grantedIdentifiers = $this->productCategoryAccessQuery->getGrantedProductIdentifiers(
             [$productIdentifier->asString()],
-            $userId,
+            $user->getUserIdentifier(),
             $accessLevel
         );
 
