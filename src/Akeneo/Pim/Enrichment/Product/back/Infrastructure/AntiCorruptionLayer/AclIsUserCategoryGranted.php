@@ -16,8 +16,8 @@ use Webmozart\Assert\Assert;
  */
 final class AclIsUserCategoryGranted implements IsUserCategoryGranted
 {
+    /* @phpstan-ignore-next-line */
     public function __construct(
-        /* @phpstan-ignore-next-line */
         private ?ProductCategoryAccessQueryInterface $productCategoryAccessQuery,
         private UserRepositoryInterface $userRepository
     ) {

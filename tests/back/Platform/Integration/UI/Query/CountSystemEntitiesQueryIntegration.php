@@ -20,7 +20,6 @@ final class CountSystemEntitiesQueryIntegration extends TestCase
         parent::setUp();
 
         $this->connection = $this->get('database_connection');
-        $this->connection->executeQuery("DELETE FROM oro_user WHERE username = 'system'");
     }
 
     protected function getConfiguration()

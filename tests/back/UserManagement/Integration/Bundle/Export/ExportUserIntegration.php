@@ -23,7 +23,6 @@ final class ExportUserIntegration extends TestCase
         parent::setUp();
 
         $this->jobLauncher = $this->get('akeneo_integration_tests.launcher.job_launcher');
-        $this->get('database_connection')->executeQuery("DELETE FROM oro_user WHERE username = 'system'");
 
         $this->get(SqlCreateJobInstance::class)->createJobInstance(
             [

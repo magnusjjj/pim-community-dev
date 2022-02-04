@@ -25,8 +25,8 @@ class DeleteUserIntegration extends TestCase
 
         $this->getDeleteUserService()->execute(new UserId($user->id()));
 
-        $results = $this->getDatabaseConnection()->fetchFirstColumn('SELECT username FROM oro_user');
-        Assert::assertNotContains('pimgento', $results);
+        $results = $this->getDatabaseConnection()->fetchAllAssociative('SELECT username FROM oro_user');
+        Assert::assertCount(0, $results);
     }
 
     protected function getConfiguration(): Configuration
