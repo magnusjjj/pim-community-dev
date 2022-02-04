@@ -11,6 +11,12 @@ use AkeneoTest\Platform\Integration\CatalogVolumeMonitoring\Persistence\QueryTes
 
 class CountUsersIntegration extends QueryTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->get('database_connection')->executeQuery("DELETE FROM oro_user WHERE username = 'system'");
+    }
+
     public function testCountOfUsers()
     {
         $query = $this->get('pim_volume_monitoring.persistence.query.count_users');
